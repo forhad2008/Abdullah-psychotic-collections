@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abdullah Psychotic Collection</title>
+<title>Collection | Abdullah Psychotic</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -390,7 +390,7 @@ a{color:inherit;text-decoration:none}
 
   <nav class="collection-nav" aria-label="Collection navigation">
     <button class="active" data-filter="all">Created</button>
-    <button data-filter="popular">Popular</button>
+    <button data-filter="saved">Save</button>
   </nav>
 
   <section class="collection-intro">
@@ -404,18 +404,16 @@ a{color:inherit;text-decoration:none}
   <!-- JavaScript creates all 33 image boxes here -->
   <section id="collectionGrid" class="collection-grid" aria-label="Abdullah Psychotic collection"></section>
 
-<div class="pagination" id="pagination" aria-label="Collection pages">
-  <a href="https://forhad2008.github.io/Abdullah-psychotic/index.html" id="prevPage" aria-label="Previous page">‹</a>
-
-  <a href="index.html" class="active page-btn">1</a>
-  <a href="collection2.html" class="page-btn">2</a>
-  <a href="collection3.html" class="page-btn">3</a>
-
-  <a href="collection3.html" id="nextPage" aria-label="Next page">›</a>
-</div>
+  <div class="pagination" id="pagination" aria-label="Collection pages">
+    <button type="button" id="prevPage" aria-label="Previous page">‹</button>
+    <button type="button" class="active page-btn" data-page="1">1</button>
+    <button type="button" class="page-btn" data-page="2">2</button>
+    <button type="button" class="page-btn" data-page="3">3</button>
+    <button type="button" id="nextPage" aria-label="Next page">›</button>
+  </div>
 
   <div class="collection-footer">
-    <span id="collectionCount">100+ designs</span>
+    <span id="collectionCount">33 designs</span>
     <span>Abdullah Psychotic © 2026</span>
   </div>
 
@@ -675,11 +673,9 @@ function renderCollection(mode="all", page=currentPage){
 
   let visibleItems = collectionItems;
 
-  /* Popular = selected products from the original collection */
-  if(mode === "popular"){
-    visibleItems = collectionItems.filter((item, index) =>
-      [0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32].includes(index)
-    );
+  /* Save = saved products from the collection */
+  if(mode === "saved"){
+    visibleItems = collectionItems.filter(item => item.saved);
   }
 
   const totalPages = Math.ceil(visibleItems.length / ITEMS_PER_PAGE);
@@ -695,11 +691,7 @@ function renderCollection(mode="all", page=currentPage){
   count.textContent =
     `${visibleItems.length} ${visibleItems.length === 1 ? "design" : "designs"}`;
 
-  document.querySelectorAll(".page-btn").forEach(btn => {
-    const pageNumber = Number(btn.dataset.page);
-    btn.classList.toggle("active", pageNumber === currentPage);
-    btn.disabled = pageNumber > totalPages;
-  });
+
 
   document.getElementById("prevPage").disabled = currentPage === 1;
   document.getElementById("nextPage").disabled = currentPage === totalPages;
@@ -713,20 +705,6 @@ filterButtons.forEach(button => {
     button.classList.add("active");
     renderCollection(button.dataset.filter, 1);
   });
-});
-
-document.querySelectorAll(".page-btn").forEach(button => {
-  button.addEventListener("click", () => {
-    renderCollection(currentMode, Number(button.dataset.page));
-  });
-});
-
-document.getElementById("prevPage").addEventListener("click", () => {
-  if(currentPage > 1) renderCollection(currentMode, currentPage - 1);
-});
-
-document.getElementById("nextPage").addEventListener("click", () => {
-  renderCollection(currentMode, currentPage + 1);
 });
 
 /* FOLLOW BUTTON */
